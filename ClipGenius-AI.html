@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b14">
+<title>ClipGenius AI — Video Clipper</title>
+<style>
+:root{--bg:#080b14;--panel:#111725;--panel2:#151e2e;--line:#263247;--muted:#91a0b8;--text:#f4f7ff;--a:#8b5cf6;--b:#22d3ee;--green:#34d399}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 80% -10%,#30205b66,transparent 60%),radial-gradient(700px 400px at -10% 20%,#0e749044,transparent 55%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:auto;padding:22px 18px 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:20px;letter-spacing:-.5px}.logo{width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;box-shadow:0 8px 28px #8b5cf644}.logo svg{width:21px}.pill{border:1px solid #285047;background:#10251f;color:#72f0bd;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700}
+.hero{margin:0 0 24px}.eyebrow{color:#a78bfa;text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}.hero h1{font-size:clamp(30px,6vw,48px);line-height:1.08;letter-spacing:-1.7px;margin:9px 0 10px}.hero h1 span{background:linear-gradient(90deg,#c4b5fd,#67e8f9);background-clip:text;color:transparent}.hero p{color:var(--muted);margin:0;max-width:620px}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.85fr);gap:18px;align-items:start}.card{background:linear-gradient(180deg,#151d2c,#101622);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 16px 50px #0003}.card h2{font-size:16px;margin:0 0 5px}.sub{color:var(--muted);font-size:13px;margin:0 0 17px}
+.drop{border:1.5px dashed #485675;border-radius:17px;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;background:linear-gradient(145deg,#1c2740aa,#101725aa);transition:.2s}.drop.drag{border-color:var(--b);background:#10283a}.uploadicon{width:54px;height:54px;border-radius:17px;background:#29214b;color:#c4b5fd;display:grid;place-items:center;margin-bottom:13px}.uploadicon svg{width:27px}.drop strong{font-size:16px}.drop p{color:var(--muted);font-size:12px;margin:5px 0 14px}.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:800;color:white;background:linear-gradient(100deg,#7c3aed,#2563eb);box-shadow:0 8px 24px #5b21b644}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.secondary{background:#202b40;border:1px solid #35435b;box-shadow:none;color:#e4eaff}.filemeta{display:none;margin-top:14px;background:#0c1320;border:1px solid #28354a;border-radius:12px;padding:11px 13px;align-items:center;gap:10px}.filemeta.show{display:flex}.filemeta .fname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:13px}.filemeta small{display:block;color:var(--muted);font-weight:400}.filemeta .remove{margin-left:auto;background:none;border:0;color:#fca5a5;font-size:20px}
+.preview{display:none;margin-top:14px;width:100%;max-height:330px;border-radius:13px;background:#000}.preview.show{display:block}
+.field{margin:18px 0}.field label{display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:13px;margin-bottom:9px}.hint{font-weight:400;color:var(--muted);font-size:11px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.choice{background:#0c1421;color:#d5def0;border:1px solid #2a3850;border-radius:11px;padding:11px 7px;font-size:12px;font-weight:750}.choice.active{border-color:#9b83ff;background:#2a2050;color:#e9ddff;box-shadow:inset 0 0 0 1px #9b83ff55}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.select{width:100%;background:#0c1421;border:1px solid #2a3850;color:var(--text);border-radius:11px;padding:12px;outline:none}
+.range{width:100%;accent-color:#9b7bff}.rangeval{color:#c4b5fd;font-weight:800}
+.generate{width:100%;padding:15px;border-radius:14px;font-size:15px;margin-top:6px}.note{color:#8190a8;text-align:center;font-size:11px;margin:11px 0 0}
+.sidecard{position:sticky;top:15px}.steps{display:grid;gap:14px;margin-top:18px}.step{display:flex;gap:11px;align-items:flex-start}.num{flex:none;width:27px;height:27px;border-radius:9px;background:#282044;color:#c4b5fd;display:grid;place-items:center;font-size:12px;font-weight:850}.step b{display:block;font-size:13px}.step span{display:block;color:var(--muted);font-size:12px;margin-top:2px}.divider{height:1px;background:var(--line);margin:19px 0}.status{display:none;margin-top:18px;padding:14px;border-radius:13px;border:1px solid #31516a;background:#0c1d2b}.status.show{display:block}.status b{display:block;font-size:13px}.status p{margin:4px 0 0;color:#a9bbd3;font-size:12px}.bar{height:6px;background:#243247;border-radius:10px;overflow:hidden;margin-top:12px}.bar i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--a),var(--b));transition:width .3s}
+.results{margin-top:18px;display:none}.results.show{display:block}.resultitem{border:1px solid var(--line);background:#0d1421;border-radius:13px;padding:12px;margin-top:9px;display:flex;align-items:center;justify-content:space-between;gap:10px}.resultitem small{color:var(--muted);display:block}.resultitem a{color:#a5b4fc;text-decoration:none;font-weight:800;font-size:12px}
+.footer{text-align:center;color:#65738b;font-size:11px;margin-top:30px}
+@media(max-width:780px){.grid{grid-template-columns:1fr}.sidecard{position:static}.wrap{padding:17px 13px 42px}.card{padding:16px}.hero{margin-bottom:19px}.top{margin-bottom:24px}.drop{min-height:200px}}
+@media(max-width:360px){.choices{gap:5px}.choice{font-size:11px}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5v15l14-7.5z"/></svg></div>ClipGenius <span style="color:#a78bfa">AI</span></div>
+  <div class="pill">● CLOUD WORKFLOW</div>
+</header>
+<section class="hero">
+  <div class="eyebrow">Turn long videos into scroll-stopping clips</div>
+  <h1>Your best moments.<br><span>Found by AI.</span></h1>
+  <p>Upload a video, choose your clip style, and let ClipGenius find the moments worth sharing.</p>
+</section>
+<div class="grid">
+<main class="card">
+  <h2>1. Upload your video</h2>
+  <p class="sub">Choose a video from your phone or computer.</p>
+  <div class="drop" id="drop">
+    <div class="uploadicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m-5 5 5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg></div>
+    <strong>Drop your video here</strong>
+    <p>MP4, MOV, WEBM · Upload from your device</p>
+    <button class="btn secondary" id="browse">Choose video</button>
+    <input id="file" type="file" accept="video/*" hidden>
+  </div>
+  <div class="filemeta" id="filemeta"><div style="font-size:22px">🎬</div><div class="fname" id="fname">video.mp4<small id="fsize"></small></div><button class="remove" id="remove" aria-label="Remove video">×</button></div>
+  <video class="preview" id="preview" controls playsinline></video>
+
+  <div class="divider"></div>
+  <h2>2. Customize your clips</h2>
+  <p class="sub">Choose how your AI clips should look.</p>
+  <div class="field">
+    <label>Aspect ratio <span class="hint">Where will you post?</span></label>
+    <div class="choices" id="ratio">
+      <button class="choice active" data-value="9:16">▯ Vertical 9:16</button>
+      <button class="choice" data-value="1:1">□ Square 1:1</button>
+      <button class="choice" data-value="16:9">▭ Landscape 16:9</button>
+    </div>
+  </div>
+  <div class="two">
+    <div class="field">
+      <label for="count">Number of clips</label>
+      <select class="select" id="count"><option>3</option><option selected>5</option><option>10</option><option>15</option><option>20</option></select>
+    </div>
+    <div class="field">
+      <label for="length">Clip length</label>
+      <select class="select" id="length"><option value="15-30">15–30 sec</option><option value="30-60" selected>30–60 sec</option><option value="60-90">60–90 sec</option><option value="90-180">90–180 sec</option><option value="auto">Auto</option></select>
+    </div>
+  </div>
+  <div class="field">
+    <label>AI highlight style</label>
+    <div class="choices" id="style">
+      <button class="choice active" data-value="viral">🔥 Viral moments</button>
+      <button class="choice" data-value="educational">🎓 Educational</button>
+      <button class="choice" data-value="funny">😂 Funny</button>
+    </div>
+  </div>
+  <div class="field">
+    <label>Captions <span class="hint">Subtitle preference</span></label>
+    <div class="choices" id="captions">
+      <button class="choice active" data-value="true">On</button>
+      <button class="choice" data-value="false">Off</button>
+    </div>
+  </div>
+  <button class="btn generate" id="generate" disabled>✦ Generate AI Clips</button>
+  <p class="note">Your video is intended to be processed securely in the cloud.</p>
+  <div class="status" id="status" aria-live="polite"><b id="statusTitle">Ready</b><p id="statusText">Waiting to start…</p><div class="bar"><i id="progress"></i></div></div>
+  <div class="results" id="results"><h2 style="margin-top:18px">Your clips</h2><div id="resultlist"></div></div>
+</main>
+<aside class="card sidecard">
+  <h2>How it works</h2><p class="sub">Three simple steps to your next great post.</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div><b>Upload once</b><span>Select a video file from your device.</span></div></div>
+    <div class="step"><div class="num">2</div><div><b>AI finds highlights</b><span>Cloud AI analyzes the content and selects strong moments.</span></div></div>
+    <div class="step"><div class="num">3</div><div><b>Download and share</b><span>Get separate clips ready for your social channels.</span></div></div>
+  </div>
+  <div class="divider"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:13px">Project status</b><span class="pill">HTML FRONTEND</span></div>
+  <p style="color:var(--muted);font-size:12px;margin:10px 0 0">This single file contains the complete interface. To make AI processing live, connect it to your cloud API endpoint.</p>
+  <div class="divider"></div>
+  <label for="api" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px">Cloud API endpoint</label>
+  <input id="api" class="select" type="url" placeholder="https://your-cloud-api.com">
+  <p style="font-size:11px;color:#8290a7;margin:7px 0 0">Add your deployed API URL here when your cloud backend is ready. No API secret should be placed in this page.</p>
+</aside>
+</div>
+<div class="footer">ClipGenius AI · Single-file HTML interface · Built for mobile and desktop</div>
+</div>
+<script>
+(() => {
+ const $=id=>document.getElementById(id);
+ let selectedFile=null, previewUrl=null;
+ const fileInput=$('file'), drop=$('drop'), generate=$('generate');
+ function formatSize(bytes){if(bytes<1024*1024)return (bytes/1024).toFixed(0)+' KB';return (bytes/1024/1024).toFixed(1)+' MB'}
+ function setFile(file){
+   if(!file)return;
+   if(!file.type.startsWith('video/')){alert('Please choose a video file.');return}
+   selectedFile=file;$('fname').childNodes[0].textContent=file.name;$('fsize').textContent=formatSize(file.size);
+   $('filemeta').classList.add('show');generate.disabled=false;
+   if(previewUrl)URL.revokeObjectURL(previewUrl);
+   previewUrl=URL.createObjectURL(file);$('preview').src=previewUrl;$('preview').classList.add('show');
+   $('status').classList.remove('show');$('results').classList.remove('show');
+ }
+ $('browse').addEventListener('click',()=>fileInput.click());
+ fileInput.addEventListener('change',e=>setFile(e.target.files[0]));
+ $('remove').addEventListener('click',()=>{selectedFile=null;fileInput.value='';$('filemeta').classList.remove('show');$('preview').classList.remove('show');$('preview').removeAttribute('src');generate.disabled=true;if(previewUrl)URL.revokeObjectURL(previewUrl)});
+ ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')}));
+ ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')}));
+ drop.addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
+ function bindChoices(id){$(id).querySelectorAll('.choice').forEach(btn=>btn.addEventListener('click',()=>{$(id).querySelectorAll('.choice').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}))}
+ ['ratio','style','captions'].forEach(bindChoices);
+ const active=id=>$(id).querySelector('.active').dataset.value;
+ function showStatus(title,msg,pct){$('status').classList.add('show');$('statusTitle').textContent=title;$('statusText').textContent=msg;$('progress').style.width=pct+'%'}
+ generate.addEventListener('click',async()=>{
+   if(!selectedFile)return;
+   const endpoint=$('api').value.trim();
+   if(!endpoint){showStatus('Cloud API not connected','Your HTML interface is ready. Add your deployed cloud API endpoint to enable real AI processing.',0);return}
+   try{
+     generate.disabled=true;showStatus('Uploading video…','Sending your video to the cloud service.',12);
+     const form=new FormData();form.append('file',selectedFile);form.append('aspect_ratio',active('ratio'));form.append('clip_count',$('count').value);form.append('clip_length',$('length').value);form.append('style',active('style'));form.append('captions',active('captions'));
+     const response=await fetch(endpoint.replace(/\/$/,'')+'/api/clips', {method:'POST',body:form});
+     if(!response.ok)throw new Error('Cloud API returned '+response.status);
+     const data=await response.json();
+     showStatus('Request submitted','Your cloud service accepted the video. Check the result below.',100);
+     const clips=data.clips||[];
+     $('resultlist').innerHTML='';
+     clips.forEach((clip,i)=>{const item=document.createElement('div');item.className='resultitem';const info=document.createElement('div');const name=document.createElement('b');name.textContent=clip.name||('Clip '+(i+1));const small=document.createElement('small');small.textContent=clip.duration||'AI selected clip';info.append(name,small);const a=document.createElement('a');a.href=clip.url;a.textContent='Download ↓';a.target='_blank';a.rel='noopener';item.append(info,a);$('resultlist').append(item)});
+     if(clips.length){$('results').classList.add('show')}else{$('statusText').textContent='Job accepted. Your backend should return a clips array with downloadable URLs.'}
+   }catch(err){showStatus('Could not connect',err.message+' — check the cloud API URL and server status.',0)}
+   finally{generate.disabled=false}
+ });
+})();
+</script>
+</body>
+</html>
